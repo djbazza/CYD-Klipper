@@ -16,6 +16,11 @@
 #define XPT2046_CLK 25
 #define XPT2046_CS 33
 
+#define CST820_SDA 33 
+#define CST820_SCL 32
+#define CST820_RST 25
+#define CST820_IRQ 21
+
 TS_Point touchscreen_point();
 void touchscreen_calibrate(bool force = false);
 void screen_setBrightness(byte brightness);

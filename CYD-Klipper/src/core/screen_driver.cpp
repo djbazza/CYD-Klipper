@@ -3,9 +3,11 @@
 #include <TFT_eSPI.h>
 #include "../conf/global_config.h"
 #include "lvgl.h"
+#include "CST820.h"
 
-SPIClass touchscreen_spi = SPIClass(HSPI);
-XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
+//SPIClass touchscreen_spi = SPIClass(HSPI);
+//XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
+Touch_CST820 touchscreen(CST820_SDA, CST820_SCL, CST820_RST, CST820_IRQ);
 
 uint32_t LV_EVENT_GET_COMP_CHILD;
 
@@ -19,10 +21,18 @@ lv_timer_t *screenSleepTimer;
 
 TS_Point touchscreen_point()
 {
-    TS_Point p = touchscreen.getPoint();
+    TS_Point p; 
+    if(touchscreen.getTouch(&p.y, &p.x, &p.gesture))
+    {
+        p.x = round((p.x * global_config.screenCalXMult) + global_config.screenCalXOffset);
+        p.y = round((p.y * global_config.screenCalYMult) + global_config.screenCalYOffset);
+        // Serial.printf("Touch X: %d Y: %d\n", p.x, p.y);
+        return p;
+    }
+/*    TS_Point p = touchscreen.getPoint();
     p.x = round((p.x * global_config.screenCalXMult) + global_config.screenCalXOffset);
     p.y = round((p.y * global_config.screenCalYMult) + global_config.screenCalYOffset);
-    return p;
+    return p;*/
 }
 
 void touchscreen_calibrate(bool force)
@@ -41,29 +51,29 @@ void touchscreen_calibrate(bool force)
     TS_Point p;
     int16_t x1, y1, x2, y2;
 
-    while (touchscreen.touched())
+    while (touchscreen.getTouch(&p.y, &p.x, &p.gesture))
         ;
     tft.drawFastHLine(0, 10, 20, ILI9341_WHITE);
     tft.drawFastVLine(10, 0, 20, ILI9341_WHITE);
-    while (!touchscreen.touched())
+    while (!touchscreen.getTouch(&p.y, &p.x, &p.gesture))
         ;
     delay(50);
-    p = touchscreen.getPoint();
+    p = touchscreen.getTouch(&p.y, &p.x, &p.gesture);
     x1 = p.x;
     y1 = p.y;
     tft.drawFastHLine(0, 10, 20, ILI9341_BLACK);
     tft.drawFastVLine(10, 0, 20, ILI9341_BLACK);
     delay(500);
 
-    while (touchscreen.touched())
+    while (touchscreen.getTouch(&p.y, &p.x, &p.gesture))
         ;
     tft.drawFastHLine(300, 230, 20, ILI9341_WHITE);
     tft.drawFastVLine(310, 220, 20, ILI9341_WHITE);
 
-    while (!touchscreen.touched())
+    while (!touchscreen.getTouch(&p.y, &p.x, &p.gesture))
         ;
     delay(50);
-    p = touchscreen.getPoint();
+    p = touchscreen.getTouch(&p.y, &p.x, &p.gesture);
     x2 = p.x;
     y2 = p.y;
     tft.drawFastHLine(300, 230, 20, ILI9341_BLACK);

@@ -1,7 +1,7 @@
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/suchmememanyskill/CYD-Klipper)
 [![Donations](https://img.shields.io/badge/Support%20on-Ko--Fi-red)](https://ko-fi.com/suchmememanyskill)
 
-# CYD-Klipper
+# CYD-Klipper (Capacity Touch Version)
 An implementation of a wireless Klipper status display on an ESP32 + screen. Uses Moonraker to fetch data.
 
 A simple and cheap solution to use a dedicated screen with Klipper, a 3d printing Firmware.
@@ -10,7 +10,7 @@ A simple and cheap solution to use a dedicated screen with Klipper, a 3d printin
 
 ### Required hardware
 
-A ESP32-2432S028R is required to run this project. You can find out where to buy these on the ["ESP32 Cheap Yellow Display"](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display#where-to-buy) repository.
+A ESP32-2432S028C is required to run this project. You can find out where to buy these on the ["ESP32 Cheap Yellow Display"](https://s.click.aliexpress.com/e/_DExyLEp).
 
 ### Features
 - View printer status
